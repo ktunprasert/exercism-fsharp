@@ -1,5 +1,7 @@
 module SpaceAge
 
+let orbitalPeriod = 31557600.0
+
 type Planet =
     | Mercury
     | Venus
@@ -20,6 +22,6 @@ let age (planet: Planet) (seconds: int64): float =
     | Saturn -> 29.447498
     | Uranus -> 84.016846
     | Neptune -> 164.79132
-    |> (*) 31557600.0
+    |> (*) orbitalPeriod
     |> (/) (float seconds)
 
