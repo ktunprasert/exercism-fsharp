@@ -7,7 +7,7 @@ let successRate (speed: int): float =
     | 5 | 6 | 7 | 8 -> 0.9
     | 9 -> 0.8
     | 10 -> 0.77
-    | _ -> 0.0
+    | _ -> failwith "speed should be between 0 and 10"
 
 let productionRatePerHour (speed: int): float = 221.0 * float speed * (successRate speed)
 
