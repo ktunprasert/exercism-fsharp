@@ -2,7 +2,7 @@ module TisburyTreasureHunt
 
 let getCoordinate (line: string * string) : string = snd line
 
-let convertCoordinate (coordinate: string) : int * char = int coordinate.[0] - 48, coordinate.[1]
+let convertCoordinate (coordinate: string) : int * char = int coordinate.[0] - int '0', coordinate.[1]
 
 let compareRecords
     ((_, azaraCoords): string * string)
