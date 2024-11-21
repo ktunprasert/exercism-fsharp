@@ -7,7 +7,6 @@ let canSpy (knightIsAwake: bool) (archerIsAwake: bool) (prisonerIsAwake: bool): 
 let canSignalPrisoner (archerIsAwake: bool) (prisonerIsAwake: bool): bool = prisonerIsAwake && not archerIsAwake
 
 let canFreePrisoner (knightIsAwake: bool) (archerIsAwake: bool) (prisonerIsAwake: bool) (petDogIsPresent: bool): bool =
-    match petDogIsPresent, prisonerIsAwake, archerIsAwake, knightIsAwake with
-    | true, _, false, _ -> true
-    | false, true, false, false -> true
-    | _ -> false
+    match petDogIsPresent with
+    | true -> not archerIsAwake
+    | false -> prisonerIsAwake && (archerIsAwake, knightIsAwake) = (false,false)
