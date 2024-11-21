@@ -12,4 +12,4 @@ let transform (c: char) : string =
     | c -> c.ToString()
 
 let clean (identifier: string) : string =
-    identifier |> Seq.map transform |> String.concat ""
+    String.collect transform identifier
