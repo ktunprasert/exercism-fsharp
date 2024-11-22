@@ -15,5 +15,4 @@ let description (appointmentDate: DateTime) : string =
     $"You have an appointment on {appointmentDate}."
 
 let anniversaryDate () : DateTime =
-    let now = DateTime.Now
-    DateTime(now.Year, 9, 15)
+    DateTime(DateTime.Now.Year, 9, 15)
