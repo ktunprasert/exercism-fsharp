@@ -15,4 +15,8 @@ let rec pizzaPrice (pizza: Pizza) : int =
     | ExtraSauce p -> 1 + pizzaPrice p
     | ExtraToppings p -> 2 + pizzaPrice p
 
-let orderPrice (pizzas: Pizza list) : int = pizzas |> List.sumBy pizzaPrice
+let orderPrice (pizzas: Pizza list) : int =
+    match pizzas with
+    | [ p ] -> pizzaPrice p + 3
+    | [ p1; p2 ] -> pizzaPrice p1 + pizzaPrice p2 + 2
+    | pzs -> pzs |> List.sumBy pizzaPrice
