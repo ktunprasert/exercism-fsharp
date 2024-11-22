@@ -22,9 +22,13 @@ type Die =
     | Five = 5
     | Six = 6
 
-let scoreSingle dice kind = dice |> List.filter (fun x -> x = kind) |> List.length |> (*) (int kind)
+let scoreSingle dice kind =
+    dice |> List.filter (fun x -> x = kind) |> List.length |> (*) (int kind)
 
 let score category dice : int =
+    let counted = dice |> List.countBy id
+    let sorted = dice |> List.map int |> List.sort
+
     match category with
     | Ones -> scoreSingle dice Die.One
     | Twos -> scoreSingle dice Die.Two
@@ -32,37 +36,11 @@ let score category dice : int =
     | Fours -> scoreSingle dice Die.Four
     | Fives -> scoreSingle dice Die.Five
     | Sixes -> scoreSingle dice Die.Six
-    | FullHouse ->
-        let groups: (Die * Die list) list = dice |> List.groupBy id
-
-        match groups.Length with
-        | 2 ->
-            if groups |> List.exists (fun (_, g) -> g.Length <> 2 && g.Length <> 3) then
-                0
-            else
-                groups |> List.collect (fun (_, v) -> v) |> List.sumBy int
-
-        | _ -> 0
-
-    | FourOfAKind ->
-        let groups = dice |> List.groupBy id
-        if groups |> List.exists (fun (_, g) -> g.Length >= 4) then
-            groups |> List.filter (fun (_, g) -> g.Length >= 4) |> List.head |> fst |> int |> (*) 4
-        else
-            0
-
-    | LittleStraight ->
-        match dice |> List.sortBy int with
-        | [Die.One; Die.Two; Die.Three; Die.Four; Die.Five] -> 30
-        | _ -> 0
-
-    | BigStraight ->
-        match dice |> List.sortBy int with
-        | [Die.Two; Die.Three; Die.Four; Die.Five; Die.Six] -> 30
-        | _ -> 0
-
+    | FullHouse when counted.Length = 2 && counted |> List.exists (fun (_, g) -> g = 3) -> dice |> List.sumBy int
+    | FourOfAKind when counted |> List.exists (fun (_, n) -> n >= 4) ->
+        counted |> List.find (fun (_, n) -> n >= 4) |> fst |> int |> (*) 4
+    | LittleStraight when sorted = [ 1..5 ] -> 30
+    | BigStraight when sorted = [ 2..6 ] -> 30
     | Choice -> dice |> List.sumBy int
-    | Yacht ->
-        match dice |> List.groupBy id with
-        | [(_, g)] when g.Length = 5 -> 50
-        | _ -> 0
+    | Yacht when snd (counted.[0]) = 5 -> 50
+    | _ -> 0
